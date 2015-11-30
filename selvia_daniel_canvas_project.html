@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+<title> Cubic Art Animated Simulator</title>
+<script>
+var canvas;
+var context;
+var circles=[];
+var squares=[];
+var rectangles=[];
+var triangles=[];
+var clouds=[];
+  
+
+
+function Circle (x,y,color){
+	this.x=x;
+	this.y=y;
+	this.color=color;
+	this.dx=Math.random()*10;
+	this.dy=Math.random()*10;
+
+
+}
+function Square (x,y,color){
+	this.x=x;
+	this.y=y;
+	this.color=color;
+	this.dx=Math.random()*10;
+	this.dy=Math.random()*10;
+
+
+}
+
+function Rectangle (x,y,color){
+	this.x=x;
+	this.y=y;
+	this.color=color;
+	this.dx=Math.random()*10;
+	this.dy=Math.random()*10;
+}
+
+function Triangle (x,y,color){
+	this.x=x;
+	this.y=y;
+	this.color=color;
+	this.dx=Math.random()*10;
+	this.dy=Math.random()*10;
+}
+function Cloud (x,y,color){
+	this.x=x;
+	this.y=y;
+	this.color=color;
+	this.dx=Math.random()*10;
+	this.dy=Math.random()*10;
+}
+function init(){
+    canvas = document.getElementById('canvas');
+    context = canvas.getContext('2d');
+		
+    context.fillText('Hello,World',canvas.width-20,canvas.height-40);
+	context.fillStyle='white';
+	context.font='arial';
+	context.textAlign='right';
+	
+
+	canvas.onclick=function(event){
+		
+		handleClick(event.clientX,event.clientY);
+		
+	};
+	
+    setInterval(handleClick,30);
+    }
+    function handleClick(x,y){
+		
+		var found=false;
+		
+        
+        for(var i = 0; i<circles.length;i++){
+		d=Math.sqrt((circles[i].x-x)*(circles[i].x-x)+(circles[i].y-y)*(circles[i].y-y));
+			if (d<=30){
+				circles.splice(i,1);
+				found=true;
+			}
+			
+			}
+            
+            
+			for(var i = 0; i<squares.length;i++){
+		d=Math.sqrt((squares[i].x-x)*(squares[i].x-x)+(squares[i].y-y)*(squares[i].y-y));
+			if (d<=30){
+				squares.splice(i,1);
+				found=true;
+			}
+			}
+			
+			for(var i = 0; i<rectangles.length;i++){
+		d=Math.sqrt((rectangles[i].x-x)*(rectangles[i].x-x)+(rectangles[i].y-y)*(rectangles[i].y-y));
+			if (d<=30){
+				rectangles.splice(i,1);
+				found=true;
+			}
+			
+			}
+			for(var i = 0; i<triangles.length;i++){
+		d=Math.sqrt((triangles[i].x-x)*(triangles[i].x-x)+(triangles[i].y-y)*(triangles[i].y-y));
+			if (d<=30){
+				triangles.splice(i,1);
+				found=true;
+			}
+			}
+			for(var i = 0; i<clouds.length;i++){
+		d=Math.sqrt((clouds[i].x-x)*(clouds[i].x-x)+(clouds[i].y-y)*(clouds[i].y-y));
+			if (d<=30){
+				clouds.splice(i,1);
+				found=true;
+			}
+			}
+			
+			fillBackgroundColor();
+		if(!found){
+		
+			var colors = ['red','blue','green','orange','purple','yellow'];
+			var color = colors[Math.floor(Math.random()*colors.length)];
+			circles.push(new Circle(x,y,color));
+			squares.push(new Square(x,y,color));
+			rectangles.push(new Rectangle(x,y,color));
+			triangles.push(new Triangle(x,y,color));
+			clouds.push(new Cloud(x,y,color));
+			
+			
+		}
+       
+        
+		for(var i=0;i<circles.length;i++)
+		{
+			drawCircle(circles[i]);
+		}
+		
+		for(var i=0;i<squares.length;i++){
+			drawSquare(squares[i]);
+		}
+		
+		
+		for(var i=0;i<rectangles.length;i++){
+			drawRectangle(rectangles[i]);
+		}
+		for(var i=0;i<triangles.length;i++){
+			 drawTriangle(triangles[i]);
+		}
+		
+		for(var i=0;i<clouds.length;i++){
+			 drawCloud(clouds[i]);
+		}
+	}
+	
+	function drawCircle(circle){
+		context.beginPath();
+		context.arc(circle.x,circle.y,30,0,degreesToRadians(360),true);
+		context.fillStyle=circle.color;
+		context.fill();
+		if (circle.x + circle.dx > canvas.width || circle.x + circle.dx < 0)
+    circle.dx = -circle.dx;
+  if (circle.y + circle.dy > canvas.height || circle.y + circle.dy < 0)
+    circle.dy = -circle.dy;
+  circle.x += circle.dx;
+  circle.y += circle.dy;
+		
+	}
+	
+function drawSquare(square)	{
+context.beginPath();
+		context.rect(square.x,square.y,50,50, true);
+		context.fillStyle=square.color;
+		context.fill();
+		if (square.x + square.dx > canvas.width || square.x + square.dx < 0)
+    square.dx = -square.dx;
+  if (square.y + square.dy > canvas.height || square.y + square.dy < 0)
+    square.dy = -square.dy;
+  square.x += square.dx;
+  square.y += square.dy;
+	
+
+
+}
+
+function drawRectangle(rectangle)	{
+context.beginPath();
+		context.rect(rectangle.x,rectangle.y,100,75, true);
+		context.fillStyle=rectangle.color;
+		context.fill();
+		if (rectangle.x + rectangle.dx > canvas.width || rectangle.x + rectangle.dx < 0)
+    rectangle.dx = -rectangle.dx;
+  if (rectangle.y + rectangle.dy > canvas.height || rectangle.y + rectangle.dy < 0)
+    rectangle.dy = -rectangle.dy;
+  rectangle.x += rectangle.dx;
+  rectangle.y += rectangle.dy;
+	
+
+
+}
+function drawTriangle(x,y,w,h) {
+	context.beginPath();
+	context.moveTo(x,y,true);
+	context.lineTo(x + w/2, y + h);
+	context.lineTo(x - w/2, y + h);
+	
+	context.fill();
+}
+    
+	
+	
+	function drawCloud(cloud) {
+		 context.beginPath();
+		 context.moveTo(cloud.x, cloud.y);
+		 context.bezierCurveTo(cloud.x-40, cloud.y+20, cloud.x-40, cloud.y+70, cloud.x+60, cloud.y+70);
+		  context.bezierCurveTo(cloud.x+80, cloud.y+100, cloud.x+170, cloud.y+100, cloud.x+170, cloud.y+70);
+		  context.bezierCurveTo(cloud.x+250, cloud.y+70, cloud.x+250, cloud.y+40, cloud.x+210, cloud.y+20);
+		  context.bezierCurveTo(cloud.x+260, cloud.y-40, cloud.x+200, cloud.y+50, cloud.x+170, cloud.y-30);
+		  context.bezierCurveTo(cloud.x+150, cloud.y-75, cloud.x+80, cloud.y-60, cloud.x+80, cloud.y-30);
+		  context.bezierCurveTo(cloud.x+30, cloud.y-75, cloud.x-20, cloud.y-60, cloud.x, cloud.y);
+
+		  
+		  context.closePath();
+		  context.lineWidth = 5;
+		  context.strokeStyle = cloud.color;
+		  context.stroke();
+		  
+		  if (cloud.x + cloud.dx > canvas.width || cloud.x + cloud.dx < 0)
+    cloud.dx = -cloud.dx;
+  if (cloud.y + cloud.dy > canvas.height || cloud.y + cloud.dy < 0)
+    cloud.dy = -cloud.dy;
+  cloud.x += cloud.dx;
+  cloud.y += cloud.dy;
+	  }
+	  
+	function fillBackgroundColor(){
+		context.fillStyle = 'pink';
+		context.fillRect(0,0,canvas.width,canvas.height);
+	
+	}
+	
+	function degreesToRadians(degrees){
+		return(degrees*Math.PI)/180;
+		
+	
+	}	
+	
+	function drawText() {
+		context.font = '30px arial';
+		context.fillText('Hello World', 300, 350);
+	}
+		
+	
+    window.onload= init;
+	
+	
+
+    
+
+
+
+
+</script>
+</head>
+<body>
+<h2>Animate Cubic Art!</h2>
+<canvas id='canvas' width=500 height=500></canvas>
+</body>
+</html>
